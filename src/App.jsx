@@ -26,18 +26,17 @@ class App extends Component {
   }
   componentDidMount() {
     console.log("componentDidMount <App />");
-    this.socket = new WebSocket("ws://localhost:3001", "protocolOne");
+    this.socket = new WebSocket("ws://localhost:3001");
     this.socket.onopen = (event) => {
-      this.socket.send('Connected to server.');
     }
-    this.socket.onmessage = (event) => {
-      console.log(event.data);
-    }
+
   }
   sendMessage = (message) => {
       const newMessage = {id: this.state.messages.length+1, username: this.state.currentUser.name, content: message};
       const messages = this.state.messages.concat(newMessage)
       this.setState({messages: messages})
+
+      this.socket.send(JSON.stringify(newMessage));
   }
   render() {
     console.log("Rendering on <App />");
