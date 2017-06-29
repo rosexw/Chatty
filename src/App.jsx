@@ -24,10 +24,18 @@ class App extends Component {
       this.setState({messages: messages});
     };
   }
-  sendMessage = (message) => {
-      const newMessage = {username: this.state.currentUser.name, content: message};
+  sendMessage = (messageEvent) => {
+    const {name, message} = messageEvent;
+    console.log(messageEvent);
 
-      this.socket.send(JSON.stringify(newMessage));
+    const newMessage = {username: name, content: message};
+
+    this.socket.send(JSON.stringify(newMessage));
+    this.setName(name);
+  }
+  setName = (name) => {
+    const newUser = Object.assign({}, this.state.currentUser, { name });
+    this.setState({currentUser: newUser});
   }
   render() {
     console.log("Rendering on <App />");
@@ -40,6 +48,7 @@ class App extends Component {
         <ChatBar
           currentUser={this.state.currentUser}
           onMessageSend={this.sendMessage}
+          onNameChange={this.setName}
          />
       </div>
     );

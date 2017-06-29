@@ -7,10 +7,10 @@ class ChatBar extends Component {
     };
     console.log("Rendering <ChatBar />");
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="chatbar-username-form" onSubmit={this.handleSubmit}>
         <footer className="chatbar">
-          <input className="chatbar-username" placeholder="Your Name (Optional)" defaultValue={this.props.currentUser.name}/>
-          <input className="chatbar-message" placeholder="Type a message and hit ENTER" value={this.state.value} onChange={this.handleChange} />
+          <input className="chatbar-username" placeholder="Your Name (Optional)" value={this.state.nameValue} onChange={this.handleNameChange} />
+          <input className="chatbar-message" placeholder="Type a message and hit ENTER" value={this.state.messageValue} onChange={this.handleMessageChange} />
           <input type="submit" style={ hiddenStyles } />
         </footer>
       </form>
@@ -19,16 +19,24 @@ class ChatBar extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      nameValue: this.props.currentUser.name,
+      messageValue: ""
+    };
   }
-  handleChange = (event) => {
-    this.setState({value: event.target.value});
+  handleNameChange = (event) => {
+    this.setState({nameValue: event.target.value})
+  }
+  handleMessageChange = (event) => {
+    this.setState({messageValue: event.target.value});
   }
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log("submit", this.state.value);
-    this.setState({value: ''});
-    this.props.onMessageSend(this.state.value);
+    this.setState({messageValue: ''});
+    this.props.onMessageSend({
+      name: this.state.nameValue,
+      message: this.state.messageValue
+    });
   }
 }
 export default ChatBar;
