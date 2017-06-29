@@ -17,13 +17,15 @@ class App extends Component {
     console.log("componentDidMount <App />");
     this.socket = new WebSocket("ws://localhost:3001");
     this.socket.onopen = (event) => {
-    }
-
+    };
+    this.socket.onmessage = (event) => {
+      const receivedMessage = JSON.parse(event.data);
+      const messages = this.state.messages.concat(receivedMessage);
+      this.setState({messages: messages});
+    };
   }
   sendMessage = (message) => {
-      const newMessage = {id: this.state.messages.length+1, username: this.state.currentUser.name, content: message};
-      const messages = this.state.messages.concat(newMessage)
-      this.setState({messages: messages})
+      const newMessage = {username: this.state.currentUser.name, content: message};
 
       this.socket.send(JSON.stringify(newMessage));
   }
