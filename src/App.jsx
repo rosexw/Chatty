@@ -14,8 +14,12 @@ class App extends Component {
     super(props);
     this.state = data;
   }
+  // componentDidMount() is invoked after a component is mounted - state in this method is set as data, re-rendering is triggered.
+  // username is Anonymous when nothing is typed.
+  // messages is an empty array for which we will push messages into as we receive it
+  // user count starts at 0 and goes up as more people enter the chatroom. It will live count the number of users and broadcast it.
   componentDidMount() {
-    console.log("componentDidMount <App />");
+    // WebSockets  is an advanced technology that makes it possible to open an interactive communication session between the user's browser and a server. With this API, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
     this.socket = new WebSocket("ws://localhost:3001");
     this.socket.onopen = (event) => {
       console.log('Connected to server');
@@ -23,6 +27,7 @@ class App extends Component {
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       switch (data.type) {
+        //both of these cases will concatenate the data as messages and count how many users are in the chat room
         case "incomingMessage":
         case "incomingNotification":
           const messages = this.state.messages.concat(data);
@@ -31,6 +36,7 @@ class App extends Component {
         case "incomingCount":
           this.setState({userCount: data.count});
           break;
+        //otherwise throw an error
         default:
           throw new Error("Unknown event type: " + data.type);
       }
@@ -38,8 +44,6 @@ class App extends Component {
   }
   sendMessage = (messageEvent) => {
     const {name, message} = messageEvent;
-    console.log("sendMessage", messageEvent);
-
     const newMessage = {type: "incomingMessage", username: name, content: message};
 
     this.socket.send(JSON.stringify(newMessage));
@@ -60,7 +64,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("Rendering on <App />");
     return (
       <div>
         <nav className="navbar">

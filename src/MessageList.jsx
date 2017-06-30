@@ -12,7 +12,6 @@ class MessageList extends Component {
       }
   }
   render() {
-    console.log("Rendering <MessageList />", this.props.messages);
     return (
       <main className="messages">
         { this.props.messages.map(this.renderMessage) }

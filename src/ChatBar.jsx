@@ -29,7 +29,6 @@ class ChatBar extends Component {
     const hiddenStyles = {
       height: '0px', width: '0px', border: 'none', padding: '0px'
     };
-    console.log("Rendering <ChatBar />");
     return (
       <form className="chatbar-username-form" onSubmit={this.handleSubmit}>
         <footer className="chatbar">

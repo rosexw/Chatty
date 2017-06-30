@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 class Message extends Component {
   render() {
-    console.log("Rendering <Message />");
     // set username color
     const userStyle = { color: this.props.message.color };
     return (
