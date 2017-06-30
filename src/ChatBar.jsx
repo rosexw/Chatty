@@ -1,6 +1,30 @@
 import React, {Component} from 'react';
 
 class ChatBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nameValue: this.props.currentUser.name,
+      messageValue: ""
+    };
+  }
+  handleNameChange = (event) => {
+    const username = event.target.value;
+    this.setState({nameValue: username});
+  }
+
+  handleMessageChange = (event) => {
+    const messages = event.target.value;
+    this.setState({messageValue: event.target.value});
+  }
+  handleSubmit = (event) => {
+    event.preventDefault();
+    this.props.onMessageSend({
+      name: this.state.nameValue,
+      message: this.state.messageValue
+    });
+    this.setState({messageValue: ''});
+  }
   render() {
     const hiddenStyles = {
       height: '0px', width: '0px', border: 'none', padding: '0px'
@@ -16,27 +40,6 @@ class ChatBar extends Component {
       </form>
     );
   }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      nameValue: this.props.currentUser.name,
-      messageValue: ""
-    };
-  }
-  handleNameChange = (event) => {
-    this.setState({nameValue: event.target.value})
-  }
-  handleMessageChange = (event) => {
-    this.setState({messageValue: event.target.value});
-  }
-  handleSubmit = (event) => {
-    event.preventDefault();
-    this.setState({messageValue: ''});
-    this.props.onMessageSend({
-      name: this.state.nameValue,
-      message: this.state.messageValue
-    });
-  }
 }
+
 export default ChatBar;

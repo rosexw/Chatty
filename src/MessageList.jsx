@@ -1,18 +1,24 @@
 import React, {Component} from 'react';
 import Message from './Message.jsx';
+import Notification from './Notification.jsx';
 
-// System message:
-// <div className="message system">
-//   Anonymous1 changed their name to nomnom.
-// </div>
+
 class MessageList extends Component {
+  renderMessage = (message) => {
+      if (message.type === "incomingMessage"){
+        return <Message key={message.id} message={message} />
+      } if (message.type === "incomingNotification"){
+        return <Notification key={message.id} message={message} />
+      }
+  }
   render() {
     console.log("Rendering <MessageList />", this.props.messages);
     return (
       <main className="messages">
-        {this.props.messages.map((message) => <Message message={message}  key={message.id} />)}
+        { this.props.messages.map(this.renderMessage) }
       </main>
     );
   }
 }
+
 export default MessageList;
